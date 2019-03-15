@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">sqLite</string>
     <string name="initAdd">Add Node</string>
-    <string name="parent">Parent relationship</string>
-    <string name="child">Child relationship</string>
+    <string name="parent">Relation parent</string>
+    <string name="child">Relation child </string>
     <string name="enterValue">Enter value</string>
     <string name="ok">OK</string>
 </resources>
