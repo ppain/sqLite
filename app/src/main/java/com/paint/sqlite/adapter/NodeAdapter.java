@@ -51,19 +51,19 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.NodeViewHolder
         String child_id = mCursor.getString(mCursor.getColumnIndex(RelationEntry.COLUMN_CHILD_ID));
 
         //no relation
-        if((parent_id == null) && (child_id == null)){
+        if ((parent_id == null) && (child_id == null)) {
             holder.valueText.setBackgroundResource(0);
         }
         //parent relation
-        else if((parent_id != null) && (child_id == null)){
+        else if ((parent_id != null) && (child_id == null)) {
             holder.valueText.setBackgroundResource(R.color.colorBlue);
         }
         //child relation
-        else if((parent_id == null) && (child_id != null)){
+        else if ((parent_id == null) && (child_id != null)) {
             holder.valueText.setBackgroundResource(R.color.colorYellow);
         }
         //parent and child relation
-        else{
+        else {
             holder.valueText.setBackgroundResource(R.color.colorRed);
         }
 
@@ -73,8 +73,8 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.NodeViewHolder
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, RelationActivity.class);
-                intent.putExtra("nodeId", nodeId);
-                intent.putExtra("value", value);
+                intent.putExtra(NodeEntry._ID, nodeId);
+                intent.putExtra(NodeEntry.COLUMN_VALUE, value);
                 mContext.startActivity(intent);
             }
         });

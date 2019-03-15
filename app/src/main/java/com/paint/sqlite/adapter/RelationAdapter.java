@@ -1,7 +1,6 @@
 package com.paint.sqLite.adapter;
 
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paint.sqLite.R;
+import com.paint.sqLite.data.DBHelper;
 import com.paint.sqLite.data.NodeContract.*;
 
 
 public class RelationAdapter extends RecyclerView.Adapter<RelationAdapter.rViewHolder> {
     private SQLiteDatabase mDatabase;
+    private DBHelper mDBHelper;
     private Cursor mCursor;
     private boolean isChildList;
     private String nodeId;
@@ -24,9 +25,10 @@ public class RelationAdapter extends RecyclerView.Adapter<RelationAdapter.rViewH
 
     public OnAdapterClickListener onAdapterClickListener;
 
-    public RelationAdapter(SQLiteDatabase database, Cursor cursor, String nodeId, boolean isChildList,
+    public RelationAdapter(DBHelper dbHelper, SQLiteDatabase database, Cursor cursor, String nodeId, boolean isChildList,
                            OnAdapterClickListener onAdapterClickListener) {
         flagCount = true;
+        mDBHelper = dbHelper;
         mDatabase = database;
         mCursor = cursor;
         this.nodeId = nodeId;
@@ -61,15 +63,11 @@ public class RelationAdapter extends RecyclerView.Adapter<RelationAdapter.rViewH
 
         if (flagCount) {
             flagCount = false;
-            if (isChildList) {
-                setCount(nodeId, RelationEntry.COLUMN_PARENT_ID);
-            } else {
-                setCount(nodeId, RelationEntry.COLUMN_CHILD_ID);
-            }
+            setCount();
         }
 
         //test on setBackground green
-        if (count-- > 0){
+        if (count-- > 0) {
             holder.valueText.setBackgroundResource(R.color.colorGreen);
         } else {
             holder.valueText.setBackgroundResource(0);
@@ -85,10 +83,12 @@ public class RelationAdapter extends RecyclerView.Adapter<RelationAdapter.rViewH
         });
     }
 
-    private void setCount(String id, String Column) {
-        //get count entries
-        count = (int) DatabaseUtils.queryNumEntries(mDatabase, RelationEntry.TABLE_NAME,
-                Column + " = ?", new String[] {id});
+    private void setCount() {
+        if (isChildList) {
+            count = mDBHelper.getCountRelation(mDatabase, nodeId, RelationEntry.COLUMN_PARENT_ID);
+        } else {
+            count = mDBHelper.getCountRelation(mDatabase, nodeId, RelationEntry.COLUMN_CHILD_ID);
+        }
     }
 
     @Override
