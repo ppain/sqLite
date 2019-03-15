@@ -3,7 +3,8 @@ package com.paint.sqLite.data;
 import android.provider.BaseColumns;
 
 public final class NodeContract {
-    private NodeContract(){}
+    private NodeContract() {
+    }
 
     public static final class NodeEntry implements BaseColumns {
         public final static String TABLE_NAME = "node";
